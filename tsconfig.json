@@ -6,6 +6,7 @@
     "module": "ESNext",
     "moduleDetection": "force", // We use bun 
     "allowJs": true,
+    "esModuleInterop": true,
 
     // Bundler mode
     "moduleResolution": "bundler",
@@ -36,7 +37,11 @@
       "@models/*": ["models/*"],
       "@routes/*": ["routes/*"],
       "@services/*": ["services/*"],
-      "@utils/*": ["utils/*"]
+      "@utils/*": ["utils/*"],
+      "@docs/*": ["docs/*"],
     },
+  },
+  "ts-node": {
+    "esm": true
   }
 }
