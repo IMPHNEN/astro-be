@@ -21,15 +21,6 @@ app.use(helmet({
 app.use(express.static(config.uploadPath));
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(specs));
 
-const storage = multer.diskStorage({
-    destination: config.uploadPath,
-    filename: (req, file, cb) => {
-        cb(null, file.originalname);
-    },
-});
-
-const upload = multer({ storage });
-
 
 /**
  * @swagger
