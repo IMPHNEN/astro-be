@@ -14,7 +14,7 @@ return new class extends Migration {
             $table->string('first_name');
             $table->string('last_name')->nullable();
             $table->string('middle_name')->nullable();
-            $table->string('slug')->unique()->default(hash('sha256', time())); // Stupid but it works :D;
+            $table->string('slug')->unique();
             $table->string('username')->unique();
             $table->string('backgroud')->nullable();
             $table->string('avatar')->nullable();

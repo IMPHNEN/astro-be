@@ -62,4 +62,36 @@ class User extends Authenticatable {
             'socials' => 'array',
         ];
     }
+
+    /**
+     * Get the projects created by the user.
+     */
+    public function projects()
+    {
+        return $this->hasMany(Project::class, 'creator_id');
+    }
+
+    /**
+     * Get the applications made by the user.
+     */
+    public function applications()
+    {
+        return $this->hasMany(ProjectApplication::class, 'freelancer_id');
+    }
+
+    /**
+     * Get the investments made by the user.
+     */
+    public function investments()
+    {
+        return $this->hasMany(Investment::class, 'investor_id');
+    }
+
+    /**
+     * Get the skills associated with the user.
+     */
+    public function skills()
+    {
+        return $this->belongsToMany(Skill::class, 'user_skills', 'user_id', 'skill_id');
+    }
 }
