@@ -56,7 +56,7 @@ class AuthController extends Controller {
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request) {
+    public function register(Request $request) {
         // Validate the request
         $validator = Validator::make($request->all(), [
             'email' => 'required|email|unique:users,email',
@@ -100,6 +100,14 @@ class AuthController extends Controller {
     }
 
     public function profile() {
+        if(!Auth::user()) {
+            return response()->json([
+                'message' => 'Unauthenticated',
+                'success' => false,
+                'data' => null
+            ], 401);
+        }
+
         $user = Auth::user();
 
         if (!$user) {

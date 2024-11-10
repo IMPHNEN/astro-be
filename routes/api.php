@@ -12,13 +12,13 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('profile')->group(function () {
         Route::get('/', [AuthController::class, 'profile']);
         Route::post('/logout', [AuthController::class, 'logout']);
-        
+
         Route::prefix('update')->group(function () {
-            Route::post('/', [AuthController::class, 'updateProfile']);
-            Route::post('/avatar', [AuthController::class, 'updateAvatar']);
-            Route::post('/cover', [AuthController::class, 'updateCover']);
-            Route::post('/cv', [AuthController::class, 'updateCV']);
-            Route::post('/password', [AuthController::class, 'updatePassword']);
+            Route::put('/', [AuthController::class, 'updateProfile']);
+            Route::put('/avatar', [AuthController::class, 'updateAvatar']);
+            Route::put('/cover', [AuthController::class, 'updateCover']);
+            Route::put('/cv', [AuthController::class, 'updateCV']);
+            Route::put('/password', [AuthController::class, 'updatePassword']);
         });
     });
 });

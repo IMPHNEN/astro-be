@@ -1,8 +1,13 @@
 <?php
 
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Http\Request;
+
+//Middleware
+use App\Http\Middleware\ForceJsonRequestHeader;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -12,8 +17,20 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        //
+
+        //Force json for all incoming requests
+        $middleware->append(ForceJsonRequestHeader::class);
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        //
+
+        //Custom Rendering
+        $exceptions->render(function (AuthenticationException $e, Request $request) {
+
+            return response()->json([
+                'message' => 'Unauthenticated',
+                'success' => false,
+                'data' => 'You got shit, why are you here, who are you?'
+            ], 401);
+        });
+
     })->create();
