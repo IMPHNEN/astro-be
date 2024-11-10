@@ -141,4 +141,14 @@ class AuthController extends Controller {
             'data' => null
         ], 200);
     }
+
+    public function logoutAll() {
+        Auth::user()->tokens()->delete();
+
+        return response()->json([
+            'message' => 'Logout successful',
+            'success' => true,
+            'data' => null
+        ], 200);
+    }
 }

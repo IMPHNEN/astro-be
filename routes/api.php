@@ -18,11 +18,16 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::post('/avatar', [ProfileController::class, 'updateAvatar']);
             Route::post('/background', [ProfileController::class, 'updateBackground']);
             Route::post('/cv', [ProfileController::class, 'updateCV']);
-            Route::put('/password', [ProfileController::class, 'updatePassword']);
+
+            Route::put('/password', [AuthController::class, 'updatePassword']);
         });
     });
+
+
+    Route::post('/logout', [AuthController::class, 'logout']);
+    Route::post('/logout/all', [AuthController::class, 'logoutAll']);
+
 });
 
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
-Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
