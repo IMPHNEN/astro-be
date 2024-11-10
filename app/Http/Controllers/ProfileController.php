@@ -11,7 +11,6 @@ class ProfileController extends Controller {
     public function updateProfile(Request $request) {
         $user = Auth::user();
 
-        // Validate the request
         $validator = Validator::make($request->all(), [
             'email' => 'sometimes|email|unique:users,email,' . $user->id,
             'password' => 'sometimes|string|min:8|confirmed',
@@ -38,7 +37,6 @@ class ProfileController extends Controller {
             ], 422);
         }
 
-        // Update the user's profile
         $user->update($request->only([
             'email',
             'password',
@@ -69,7 +67,6 @@ class ProfileController extends Controller {
     public function updateAvatar(Request $request) {
         $user = Auth::user();
 
-        // Validate the request
         $validator = Validator::make($request->all(), [
             'avatar' => 'required|file|mimes:jpg,jpeg,png|max:10240',
         ]);
@@ -88,13 +85,11 @@ class ProfileController extends Controller {
             $avatarName = time() . bin2hex(random_bytes(5)) . '.' . $avatar->extension();
             $file = Storage::disk('public')->putFileAs('avatar', $avatar, $avatarName);
 
-            // Update the user's profile
             $user->update([
                 'avatar' => Storage::url($file)
             ]);
         }
 
-        // Return success response
         return response()->json([
             'message' => 'Avatar updated successfully',
             'success' => true,
@@ -102,15 +97,11 @@ class ProfileController extends Controller {
         ], 200);
     }
 
-    /**
-     * Update the user's background image.
-     */
-    public function updateCover(Request $request) {
+    public function updateBackground(Request $request) {
         $user = Auth::user();
 
-        // Validate the request
         $validator = Validator::make($request->all(), [
-            'cover' => 'required|file|mimes:jpg,jpeg,png|max:10240',
+            'background' => 'required|file|mimes:jpg,jpeg,png|max:10240',
         ]);
 
         if ($validator->fails()) {
@@ -121,9 +112,8 @@ class ProfileController extends Controller {
             ], 422);
         }
 
-        if ($request->hasFile('cover')) {
-            // Save to disk
-            $background = $request->file('cover');
+        if ($request->hasFile('background')) {
+            $background = $request->file('background');
             $backgroundName = time() . bin2hex(random_bytes(5)) . '.' . $background->extension();
             $file = Storage::disk('public')->putFileAs('background', $background, $backgroundName);
 
@@ -133,9 +123,41 @@ class ProfileController extends Controller {
             ]);
         }
 
-        // Return success response
         return response()->json([
             'message' => 'Background updated successfully',
+            'success' => true,
+            'data' => $user
+        ], 200);
+    }
+
+    public function updateCV(Request $request) {
+        $user = Auth::user();
+
+        $validator = Validator::make($request->all(), [
+            'cv' => 'required|file|mimes:pdf|max:10240',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => $validator->errors()->first(),
+                'success' => false,
+                'data' => $validator->errors()
+            ], 422);
+        }
+
+        if ($request->hasFile('cv')) {
+            $cv = $request->file('cv');
+            $cvName = time() . bin2hex(random_bytes(5)) . '.' . $cv->extension();
+            $file = Storage::disk('public')->putFileAs('cv', $cv, $cvName);
+
+            // Update the user's profile
+            $user->update([
+                'cv' => Storage::url($file)
+            ]);
+        }
+
+        return response()->json([
+            'message' => 'CV updated successfully',
             'success' => true,
             'data' => $user
         ], 200);

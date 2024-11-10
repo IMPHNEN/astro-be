@@ -16,8 +16,8 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::prefix('update')->group(function () {
             Route::put('/', [ProfileController::class, 'updateProfile']);
             Route::post('/avatar', [ProfileController::class, 'updateAvatar']);
-            Route::put('/cover', [ProfileController::class, 'updateCover']);
-            Route::put('/cv', [ProfileController::class, 'updateCV']);
+            Route::post('/background', [ProfileController::class, 'updateBackground']);
+            Route::post('/cv', [ProfileController::class, 'updateCV']);
             Route::put('/password', [ProfileController::class, 'updatePassword']);
         });
     });

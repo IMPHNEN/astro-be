@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->string('last_name')->nullable();
             $table->string('middle_name')->nullable();
             $table->string('username')->unique();
-            $table->string('backgroud')->nullable();
+            $table->string('background')->nullable();
             $table->string('avatar')->nullable();
             $table->string('bio')->nullable();
             $table->string('website')->nullable();

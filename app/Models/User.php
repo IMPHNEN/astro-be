@@ -25,7 +25,7 @@ class User extends Authenticatable {
         'last_name',
         'middle_name',
         'username',
-        'backgroud',
+        'background',
         'avatar',
         'bio',
         'website',
