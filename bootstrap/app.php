@@ -6,8 +6,6 @@ use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Request;
 
-//Middleware
-use App\Http\Middleware\ForceJsonRequestHeader;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -18,8 +16,6 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
 
-        //Force json for all incoming requests
-        $middleware->append(ForceJsonRequestHeader::class);
     })
     ->withExceptions(function (Exceptions $exceptions) {
 

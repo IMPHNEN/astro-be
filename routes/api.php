@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -10,18 +11,18 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     Route::prefix('profile')->group(function () {
-        Route::get('/', [AuthController::class, 'profile']);
-        Route::post('/logout', [AuthController::class, 'logout']);
-
+        Route::get('/', [ProfileController::class, 'profile']);
+        
         Route::prefix('update')->group(function () {
-            Route::put('/', [AuthController::class, 'updateProfile']);
-            Route::put('/avatar', [AuthController::class, 'updateAvatar']);
-            Route::put('/cover', [AuthController::class, 'updateCover']);
-            Route::put('/cv', [AuthController::class, 'updateCV']);
-            Route::put('/password', [AuthController::class, 'updatePassword']);
+            Route::put('/', [ProfileController::class, 'updateProfile']);
+            Route::post('/avatar', [ProfileController::class, 'updateAvatar']);
+            Route::put('/cover', [ProfileController::class, 'updateCover']);
+            Route::put('/cv', [ProfileController::class, 'updateCV']);
+            Route::put('/password', [ProfileController::class, 'updatePassword']);
         });
     });
 });
 
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
+Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
