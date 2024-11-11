@@ -4,10 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Project extends Model
-{
+class Project extends Model {
     protected $primaryKey = 'project_id';
-    
+
     protected $fillable = [
         'slug',
         'creator_id',
@@ -20,33 +19,34 @@ class Project extends Model
         'status',
     ];
 
+    protected $status = [
+        'open',
+        'in_progress',
+        'completed'
+    ];
+
     protected $casts = [
         'created_at' => 'datetime',
         'status' => 'string',
     ];
 
-    public function creator()
-    {
-        return $this->belongsTo(User::class, 'creator_id', 'user_id');
+    public function creator() {
+        return $this->belongsTo(User::class, 'creator_id', 'id');
     }
 
-    public function applications()
-    {
+    public function applications() {
         return $this->hasMany(ProjectApplication::class, 'project_id', 'project_id');
     }
 
-    public function investments()
-    {
+    public function investments() {
         return $this->hasMany(Investment::class, 'project_id', 'project_id');
     }
 
-    public function milestones()
-    {
+    public function milestones() {
         return $this->hasMany(Milestone::class, 'project_id', 'project_id');
     }
 
-    public function pitchDecks()
-    {
+    public function pitchDecks() {
         return $this->hasMany(PitchDeck::class, 'project_id', 'project_id');
     }
 }

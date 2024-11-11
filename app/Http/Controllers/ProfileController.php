@@ -162,4 +162,14 @@ class ProfileController extends Controller {
             'data' => $user
         ], 200);
     }
+
+    public function profile(Request $request) {
+        $user = Auth::user();
+
+        return response()->json([
+            'message' => 'Profile retrieved successfully',
+            'success' => true,
+            'data' => $user
+        ], 200);
+    }
 }
