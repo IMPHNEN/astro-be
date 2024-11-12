@@ -83,10 +83,10 @@ class ProfileController extends Controller {
             // Save to disk
             $avatar = $request->file('avatar');
             $avatarName = time() . bin2hex(random_bytes(5)) . '.' . $avatar->extension();
-            $file = Storage::disk('public')->putFileAs('avatar', $avatar, $avatarName);
+            $file = $request->file('avatar')->storeAs('avatar', $avatarName, 'r2');
 
             $user->update([
-                'avatar' => Storage::url($file)
+                'avatar' => 'https://cdn.epa.my.id/' . $file
             ]);
         }
 
@@ -115,11 +115,19 @@ class ProfileController extends Controller {
         if ($request->hasFile('background')) {
             $background = $request->file('background');
             $backgroundName = time() . bin2hex(random_bytes(5)) . '.' . $background->extension();
-            $file = Storage::disk('public')->putFileAs('background', $background, $backgroundName);
+            $file = $request->file('background')->storeAs('background', $backgroundName, 'r2');
+
+            if(!$file) {
+                return response()->json([
+                    'message' => 'Failed to upload background',
+                    'success' => false,
+                    'data' => []
+                ], 500);
+            }
 
             // Update the user's profile
             $user->update([
-                'background' => Storage::url($file)
+                'background' => 'https://cdn.epa.my.id/' . $file
             ]);
         }
 
@@ -148,11 +156,11 @@ class ProfileController extends Controller {
         if ($request->hasFile('cv')) {
             $cv = $request->file('cv');
             $cvName = time() . bin2hex(random_bytes(5)) . '.' . $cv->extension();
-            $file = Storage::disk('public')->putFileAs('cv', $cv, $cvName);
+            $file = $request->file('cv')->storeAs('cv', $cvName, 'r2');
 
             // Update the user's profile
             $user->update([
-                'cv' => Storage::url($file)
+                'cv' => 'https://cdn.epa.my.id/' . $file
             ]);
         }
 
