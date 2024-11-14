@@ -20,7 +20,7 @@ services:
         container_name: astro-nginx
         restart: unless-stopped
         ports:
-            - 8000:80
+            - 80:80
         volumes:
             - ./:/var/www
             - ./docker/nginx:/etc/nginx/conf.d/

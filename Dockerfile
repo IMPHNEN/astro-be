@@ -33,7 +33,9 @@ COPY . /var/www
 
 # Set permissions for storage and bootstrap/cache
 RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache && \
-    chmod -R 777 /var/www/storage /var/www/bootstrap/cache
+    chmod -R 777 /var/www/storage /var/www/bootstrap/cache && \
+    chmod -R 777 /var/www/storage/logs && \
+    chmod -R 777 /var/www/storage/framework
 
 # Change current user to www-data
 USER www-data
