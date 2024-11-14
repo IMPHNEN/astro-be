@@ -32,10 +32,11 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 COPY . /var/www
 
 # Set permissions for storage and bootstrap/cache
+# Don't ask me why I'm doing this 
 RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache && \
     chmod -R 777 /var/www/storage /var/www/bootstrap/cache && \
     chmod -R 777 /var/www/storage/logs && \
-    chmod -R 777 /var/www/storage/framework
+    chmod -R 777 /var/www/storage/framework/views 
 
 # Change current user to www-data
 USER www-data

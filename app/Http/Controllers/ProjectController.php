@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Investment;
 use App\Models\Project;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -111,9 +112,8 @@ class ProjectController extends Controller {
     }
 
     public function invest(Request $request, $slug) {
-        $project = Project::find($slug)->with('creator');
+        $project = Project::with('creator', 'investments')->where('slug', $slug)->first();
 
-        if (!$request->user()) return $this->respondWithError("Missing authentication", 401);
         if (!$project) return $this->respondWithError("Project not found", 404);
         if (Auth::user()->id === $project->creator->id) return $this->respondWithError("You cannot invest in your own project", 400);
 
@@ -123,31 +123,39 @@ class ProjectController extends Controller {
 
         if ($validator->fails()) {
             return $this->respondWithError("Invalid amount", 400, [
-                "investor_id" => $request->user()->user_id
+                "investor_id" => $request->user()->id
             ]);
         }
 
+        $investorId = $request->user()->id;
+        if (!$investorId) {
+            return $this->respondWithError("Investor ID is missing", 400);
+        }
+
         $project->investments()->create([
-            'investor_id' => $request->user()->user_id,
-            'amount' => $request->amount
+            'investor_id' => $investorId,
+            'amount' => $request->amount,
         ]);
 
-        return $this->respondWithSuccess("Investment made successfully");
+        return $this->respondWithSuccess("Investment made successfully", $project->refresh());
     }
 
     public function apply(Request $request, $slug) {
-        $project = Project::find($slug)->with('creator');
+        $project = Project::with('creator')->where('slug', $slug)->first();
 
-        if (!$request->user()) return $this->respondWithError("Missing authentication", 401);
         if (!$project) return $this->respondWithError("Project not found", 404);
         if (Auth::user()->id === $project->creator->id) return $this->respondWithError("You cannot apply to your own project", 400);
 
+        if ($project->applications()->where('freelancer_id', $request->user()->id)->exists()) {
+            return $this->respondWithError("You have already applied to this project", 400);
+        }
+
         $project->applications()->create([
-            'freelancer_id' => $request->user()->user_id,
+            'freelancer_id' => $request->user()->id,
             'status' => 'pending'
         ]);
 
-        return $this->respondWithSuccess("Application made successfully");
+        return $this->respondWithSuccess("Application made successfully", $project->refresh());
     }
 
     private function respondWithData($data, $successMessage, $errorMessage) {

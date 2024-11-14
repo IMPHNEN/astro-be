@@ -27,6 +27,7 @@ return new class extends Migration {
             $table->foreignId('freelancer_id')->constrained('users')->onDelete('cascade');
             $table->enum('status', ['pending', 'accepted', 'rejected'])->default('pending');
             $table->timestamp('applied_at')->useCurrent();
+            $table->timestamps();
         });
 
         // Investments table
@@ -36,6 +37,7 @@ return new class extends Migration {
             $table->foreignId('project_id')->constrained('projects')->onDelete('cascade');
             $table->decimal('amount', 15, 2);
             $table->timestamp('invested_at')->useCurrent();
+            $table->timestamps();
         });
 
         // Milestones table
