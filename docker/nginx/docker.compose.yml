@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./html:/var/www
+    depends_on:
+      - aurum
+      - oxygen
+
+  aurum:
+    image: astro-be
+    container_name: astro-be
+    expose:
+      - "9000"  # Port aplikasi aurum di container
+
+  oxygen:
+    image: astro-ml
+    container_name: astro-ml
+    expose:
+      - "8000"  # Port aplikasi FastAPI di container

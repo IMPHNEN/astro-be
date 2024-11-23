@@ -15,17 +15,6 @@ services:
             - ./:/var/www
         networks:
             - astro-network
-    nginx:
-        image: nginx:alpine
-        container_name: astro-nginx
-        restart: unless-stopped
-        ports:
-            - 80:80
-        volumes:
-            - ./:/var/www
-            - ./docker/nginx:/etc/nginx/conf.d/
-        networks:
-            - astro-network
 networks:
     astro-network:
         driver: bridge
